@@ -61,6 +61,6 @@ CNF
 (
   cd "$mysqldir"
   install_bin="$(echo ./*/mysql_install_db | tr " " "\\n" | head -1)"
-  $install_bin --datadir="$basedir/master/data"
-  $install_bin --datadir="$basedir/slave/data"
+  "$mysqldir"/bin/mysqld --initialize-insecure --datadir="$basedir/master/data"
+  "$mysqldir"/bin/mysqld --initialize-insecure --datadir="$basedir/slave/data"
 )

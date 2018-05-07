@@ -6,7 +6,7 @@ require 'active_support'
 
 config = YAML.load_file(File.expand_path(File.dirname(__FILE__)) + '/database.yml') rescue {}
 $lhm_user = config['user'] ||= 'root'
-$password = config['password'] ||= '1234'
+$password = config['password'] ||= ''
 $master_host = config['master_host'] ||= '127.0.0.1'
 $master_port = config['master_port'] ||= 3306
 $slave_host = config['slave_host'] ||= '127.0.0.1'
