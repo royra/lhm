@@ -12,3 +12,4 @@ Gemfile
 gemfiles/vendor
 omg.ponies
 *~
+/.idea
