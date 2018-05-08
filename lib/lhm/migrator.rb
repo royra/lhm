@@ -13,14 +13,15 @@ module Lhm
     include Command
     include SqlHelper
 
-    attr_reader :name, :statements, :connection, :conditions, :renames, :origin
+    attr_reader :name, :statements, :connection, :conditions, :renames, :origin, :resume
 
-    def initialize(table, connection = nil)
+    def initialize(table, connection = nil, resume = false)
       @connection = connection
       @origin = table
       @name = table.destination_name
       @statements = []
       @renames = {}
+      @resume = resume
     end
 
     # Alter a table with a custom statement
@@ -199,9 +200,11 @@ module Lhm
     end
 
     def execute
-      destination_create
-      @statements.each do |stmt|
-        @connection.execute(tagged(stmt))
+      unless @resume
+        destination_create
+        @statements.each do |stmt|
+          @connection.execute(tagged(stmt))
+        end
       end
       Migration.new(@origin, destination_read, conditions, renames)
     end

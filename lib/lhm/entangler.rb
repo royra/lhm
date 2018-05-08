@@ -23,6 +23,7 @@ module Lhm
       @connection = connection
       @max_retries = options[:lock_wait_retries] || LOCK_WAIT_RETRIES
       @sleep_duration = options[:retry_wait] || RETRY_WAIT
+      @resume = options[:resume]
     end
 
     def entangle
@@ -87,8 +88,10 @@ module Lhm
     end
 
     def before
-      entangle.each do |stmt|
-        with_retry { @connection.execute(tagged(stmt)) }
+      unless @resume
+        entangle.each do |stmt|
+          with_retry { @connection.execute(tagged(stmt)) }
+        end
       end
     end
 
