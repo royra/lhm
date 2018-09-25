@@ -194,8 +194,15 @@ module Lhm
 
       dest = @origin.destination_name
 
-      if @connection.data_source_exists?(dest)
-        error("#{ dest } should not exist; not cleaned up from previous run?")
+      data_source_exists = @connection.data_source_exists?(dest)
+      if @resume
+        unless data_source_exists
+          error("#{ dest } should exist because resume option specified")
+        end
+      else
+        if data_source_exists
+          error("#{ dest } should not exist; not cleaned up from previous run?")
+        end
       end
     end
 
